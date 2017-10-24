@@ -1,6 +1,5 @@
 use strict;
 use warnings;
-use Switch;
 
 use Term::ANSIScreen qw(cls);
 
@@ -18,23 +17,6 @@ sub clear_screen {
   my $clear_screen = cls();
   print $clear_screen;
 }
-sub fisical_currencies_menu  {
-  clear_screen();
-  print "\t\t\tMenu - Fisical Currencies\n\n";
-  exit();
-}
-
-sub crypto_currencies_menu {
-  clear_screen();
-  print "\t\t\tMenu - Crypto Currencies\n\n";
-  exit();
-}
-
-sub goodbye_message {
-  clear_screen();
-  print "\t\t\tThanks for using our program!\n\n";
-  exit();
-}
 
 sub choose_currency_type {
   print "Choose the currency type:\n\n";
@@ -47,11 +29,28 @@ sub choose_currency_type {
   my $choice = <STDIN>;
 
   if ($choice == 1) {
-    fisical_currencies_menu();
+    fisical_currencies();
   } elsif ($choice == 2) {
-    crypto_currencies_menu();
+    crypto_currencies();
   } else {
     goodbye_message();
+  }
+
+  sub fisical_currencies {
+    clear_screen();
+    print "Fisical currencies\n";
+    return 0;
+  }
+
+  sub crypto_currencies {
+    print "Crypto currencies\n";
+    return 0;
+  }
+
+  sub goodbye_message {
+    clear_screen();
+    print "\t\t\tThanks for using my program! :)\n\n";
+    exit();
   }
 }
 
