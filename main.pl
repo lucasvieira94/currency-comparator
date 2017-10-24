@@ -1,6 +1,8 @@
 use strict;
 use warnings;
 
+use Mojo::UserAgent;
+use Mojo::DOM;
 use Term::ANSIScreen qw(cls);
 
 sub main {
@@ -43,7 +45,9 @@ sub choose_currency_type {
   }
 
   sub crypto_currencies {
+    clear_screen();
     print "Crypto currencies\n";
+    crypto_scraper('Bitcoin', 'http://dolarhoje.com/bitcoin-hoje/');
     return 0;
   }
 
@@ -51,6 +55,21 @@ sub choose_currency_type {
     clear_screen();
     print "\t\t\tThanks for using my program! :)\n\n";
     exit();
+  }
+
+  sub crypto_scraper {
+    my $ua  = Mojo::UserAgent->new;
+    my $response_bitcoin = $ua->get(@_[1])->result;
+    if    ($response_bitcoin->is_success)  {
+      my $dom = Mojo::DOM->new($response_bitcoin->body);
+      my @values = $dom->find('input')->map(attr => 'value')->compact->each;
+      print "Valor @_[0]: R\$ @values[1]\n";
+    }
+    elsif ($response_bitcoin->is_error)   {
+      print $response_bitcoin->message;
+    } else {
+      print 'Whatever...';
+    }
   }
 }
 
